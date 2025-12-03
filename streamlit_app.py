@@ -1,6 +1,5 @@
 # Import python packages
 import streamlit as st
-from snowflake.snowpark.context import get_active_session # 修正: get_active_session
 from snowflake.snowpark.functions import col
 
 # Write directly to the app
@@ -16,6 +15,8 @@ st.write('The name on your Smoothie will be:', name_on_order)
 # 修正: セッション取得とDataFrame作成
 session = get_active_session()
 my_dataframe = session.table("smoothies.public.fruit_options").select(col('FRUIT_NAME')) # 修正: table, FRUIT_NAME, 閉じ括弧
+cnx = st.connection("snowflake")
+session = cnx.session()
 
 # DataFrameをPythonリストに変換 (multiselectに渡すため)
 # Snowpark DataFrameをStreamlitのウィジェットに直接渡すことはできないため、リスト化が必要です。
